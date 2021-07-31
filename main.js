@@ -210,3 +210,84 @@ const pets = [
       imageUrl: "http://lsae2.iypcdn.com/static//modules/uploads/photos/language1/dino-live-22.jpg?119"
     }
   ];
+
+
+const renderToDom = (divId, textToPrint) => {
+  const selectedToDiv = document.querySelector(divId);
+  selectedToDiv.innerHTML = textToPrint;
+}
+
+
+
+const buttons = () => {
+  const domString = 
+  
+  `
+  <button type="button" id="all-btn" class="btn btn-info">All</button>
+  <button type="button" id="cats-btn" class="btn btn-primary">Cats</button>
+  <button type="button" id="dogs-btn" class="btn btn-secondary">Dogs</button>
+  <button type="button" id="dinos-btn" class="btn btn-success">Dinos</button>`;
+
+  renderToDom("#button-container", domString);
+};
+
+const filterPets = (array, pet) => {
+  return array.filter(petObj => petObj.type === pet);
+}
+
+
+const handleButtonClick = (event) => {
+  if(event.target.id === "all-btn") {
+    petBuilder(pets);
+  }
+  if (event.target.id === "cats-btn") {
+    console.log("cat button");
+    const catCards = filterPets(pets, "cat");
+    petBuilder(catCards);
+  } 
+  if (event.target.id === "dogs-btn") {
+    console.log("dog button");
+    const dogCards = filterPets(pets, "dog");
+    petBuilder(dogCards);
+  } 
+  if (event.target.id === "dinos-btn") {
+    console.log("dino button")
+    const dinoCards = filterPets(pets, "dino");
+    petBuilder(dinoCards);
+  } 
+};
+
+const petBuilder = (petsArray) => {
+  let domString = "";
+  petsArray.forEach((pet) => {
+    domString += `
+    <div class="card" style="width: 18rem;">
+    <header>
+      <div id="name">${pet.name}</div>
+    </header>  
+      <img src="${pet.imageUrl}" class="card-img-top" alt="${pet.name}">
+        <div class="card-body">
+          <p class="card-color">${pet.color}</p>
+          <p class="card-text">${pet.specialSkill}</p>
+        </div>
+      <footer>
+        <div id="footer-type">${pet.type}</div>
+      </footer>
+  </div>
+    `;
+  });
+  renderToDom('#card', domString);
+}
+
+const buttonEvents = () => {
+  document.querySelector('#button-container')
+    .addEventListener("click", handleButtonClick);
+}
+
+const init = () => {
+  buttons();
+  buttonEvents();
+  petBuilder(pets);
+};
+
+init();
